@@ -46,7 +46,7 @@ setup(name='journal',
       extras_require={
         'test': tests_require,
         'dev' : dev_requires,
-      }
+      },
       entry_points="""\
       [paste.app_factory]
       main = journal:main
