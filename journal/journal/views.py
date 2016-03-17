@@ -24,3 +24,12 @@ def compose(request):
         return {'content': "this is the compose page."}
     except DBAPIError:
         return Response("shit broke", content_type='text/plain', status_int=500), request
+
+@view_config(route_name='entry', renderer='templates/entry.jinja2', matchdict='{entry_id}')
+def entry_id(request):
+    try:     
+        entry_id = '{entry_id}'.format(**request.matchdict)
+        entry = DBSession.query(Entry).filter(entries.id == entry_id).first()
+        return {'entry': entry}
+    except DBAPIError:
+        return Response("shit broke", content_type='text/plain', status_int=500), request
