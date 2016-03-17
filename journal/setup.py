@@ -10,8 +10,8 @@ with open(os.path.join(here, 'CHANGES.txt')) as f:
 
 requires = [
     'pyramid',
-    'pyramid_chameleon',
     'pyramid_debugtoolbar',
+    'pyramid_jinja2',
     'pyramid_tm',
     'SQLAlchemy',
     'transaction',
@@ -45,7 +45,7 @@ setup(name='journal',
       install_requires=requires,
       extras_require={
         'test': tests_require,
-        'dev' : dev_requires,
+        'dev': dev_requires,
       },
       entry_points="""\
       [paste.app_factory]

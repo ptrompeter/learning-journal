@@ -9,28 +9,27 @@ from .models import (
     )
 
 
-@view_config(route_name='home', renderer='templates/mytemplate.pt')
+@view_config(route_name='home', renderer='templates/home.jinja2')
 def my_view(request):
     try:
-        one = DBSession.query(Entry).filter(Entry.title == 'one').first()
+        all_entries = DBSession.query(Entry).all()
+        return {'entries': all_entries}
     except DBAPIError:
-        return Response(conn_err_msg, content_type='text/plain', status_int=500)
-    return {'one': one, 'project': 'journal'}
+        return Response("shit broke", content_type='text/plain', status_int=500)
 
 
-conn_err_msg = """\
-Pyramid is having a problem using your SQL database.  The problem
-might be caused by one of the following things:
+@view_config(route_name='compose', renderer='templates/base.jinja2')
+def compose(request):
+    try:
+        return {'content': "this is the compose page."}
+    except DBAPIError:
+        return Response("shit broke", content_type='text/plain', status_int=500)
 
-1.  You may need to run the "initialize_journal_db" script
-    to initialize your database tables.  Check your virtual
-    environment's "bin" directory for this script and try to run it.
-
-2.  Your database server may not be running.  Check that the
-    database server referred to by the "sqlalchemy.url" setting in
-    your "development.ini" file is running.
-
-After you fix the problem, please restart the Pyramid application to
-try it again.
-"""
-
+@view_config(route_name='entry', renderer='templates/entry.jinja2')
+def entry_detail(request):
+    try:     
+        entry_id = request.matchdict['entry_id']
+        entry = DBSession.query(Entry).filter(Entry.id == entry_id).first()
+        return {'entry': entry}
+    except DBAPIError:
+        return Response("shit broke", content_type='text/plain', status_int=500)
