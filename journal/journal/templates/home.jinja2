@@ -3,7 +3,11 @@
 
 <h1>Journal Entries:</h1>
 <ul>
-  {% for item in entries %}<li> <a href='/entries/{{item.id}}'>{{ item.title }}</a> </li>{% endfor %}
+  {% for item in entries %}
+  <li> 
+    <a href='{{request.route_url('entry', entry_id=item.id )}}'>{{ item.title }}</a> 
+  </li>
+  {% endfor %}
 </ul>
 
 {% endblock %}
