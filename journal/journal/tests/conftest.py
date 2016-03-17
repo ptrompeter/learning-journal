@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 import pytest
+import os
 from sqlalchemy import create_engine
 
 from journal.models import DBSession, Base
 
 
-TEST_DATABASE_URL = 'sqlite:////tmp/test_db.sqlite'
+TEST_DATABASE_URL = os.environ.get('JOURNAL_DB_TEST')
 
 
 @pytest.fixture(scope='session')
@@ -19,6 +20,7 @@ def sqlengine(request):
 
     request.addfinalizer(teardown)
     return engine
+
 
 @pytest.fixture()
 def dbtransaction(request, sqlengine):
