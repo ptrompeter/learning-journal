@@ -61,23 +61,5 @@ def entry_detail(request):
     except DBAPIError:
         return Response("detail broke", content_type='text/plain', status_int=500)
 
-@view_config(route_name='edit', renderer='templates/edit.jinja2')
-def edit_entry(request):
-    try:         
-        entry_id = request.matchdict['entry_id']
-        post_for_editing = DBSession.query(Entry).get(entry_id)
-        new_entry = NewEntry(request.POST, post_for_editing)
-
-        if request.method == 'POST' and new_entry.validate():
-            new_entry.populate_obj(post_for_editing)
-            DBSession.add(post_for_editing)
-            DBSession.flush()
-            transaction.commit()
-            url = request.route_url('entry', entry_id=entry_id)
-            return HTTPFound(location=url)
-        return {'new_entry': new_entry, 'entry': post_for_editing}
-    except DBAPIError:
-        return Response("shit broke", content_type='text/plain', status_int=500)
-
 
 

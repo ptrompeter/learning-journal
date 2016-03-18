@@ -36,3 +36,14 @@ def dbtransaction(request, sqlengine):
     request.addfinalizer(teardown)
 
     return connection
+
+@pytest.fixture()
+def app(dbtransaction):
+    from webtest import TestApp
+    from journal import main
+    fake_settings = {'sqlalchemy': TEST_DATABASE_URL}
+    app = main({}, **fake_settings)
+    return TestApp(app)
+
+
+
