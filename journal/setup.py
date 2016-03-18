@@ -22,7 +22,7 @@ requires = [
 
 tests_require = ['pytest', 'pytest-watch', 'tox']
 
-dev_requires = ['ipython', 'pyramid-ipython']
+dev_requires = ['ipython', 'pyramid-ipython', 'coverage']
 
 setup(name='journal',
       version='0.0',

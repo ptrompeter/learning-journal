@@ -18,7 +18,7 @@ class NewEntry(Form):
 @view_config(route_name='home', renderer='templates/home.jinja2')
 def my_view(request):
     try:
-        all_entries = DBSession.query(Entry).all()
+        all_entries = DBSession.query(Entry).order_by(Entry.id.desc()).all()
         return {'entries': all_entries}
     except DBAPIError:
         return Response("shit broke", content_type='text/plain', status_int=500)
@@ -41,7 +41,7 @@ def compose(request):
     try:
         return {'new_entry': new_entry}
     except DBAPIError:
-        return Response("shit broke", content_type='text/plain', status_int=500)
+        return Response("compose broke", content_type='text/plain', status_int=500)
     
 @view_config(route_name='entry', renderer='templates/entry.jinja2', match_param="entry_id=latest")
 def new_entry_redirect(request):
@@ -50,7 +50,7 @@ def new_entry_redirect(request):
         entry = DBSession.query(Entry).order_by(Entry.id.desc()).first()
         return {'entry': entry}
     except DBAPIError:
-        return Response("shit broke", content_type='text/plain', status_int=500)
+        return Response("new broke", content_type='text/plain', status_int=500)
 
 @view_config(route_name='entry', renderer='templates/entry.jinja2')
 def entry_detail(request):
@@ -59,26 +59,23 @@ def entry_detail(request):
         entry = DBSession.query(Entry).filter(Entry.id == entry_id).first()
         return {'entry': entry}
     except DBAPIError:
-        return Response("shit broke", content_type='text/plain', status_int=500)
+        return Response("detail broke", content_type='text/plain', status_int=500)
 
 @view_config(route_name='edit', renderer='templates/edit.jinja2')
 def edit_entry(request):
-    try:             
+    try:         
         entry_id = request.matchdict['entry_id']
         post_for_editing = DBSession.query(Entry).get(entry_id)
         new_entry = NewEntry(request.POST, post_for_editing)
 
         if request.method == 'POST' and new_entry.validate():
             new_entry.populate_obj(post_for_editing)
-            # entry = Entry()
-            # entry.title = new_entry.title.data
-            # entry.text = new_entry.text.data
-            DBSession.add(new_entry)
+            DBSession.add(post_for_editing)
             DBSession.flush()
             transaction.commit()
             url = request.route_url('entry', entry_id=entry_id)
             return HTTPFound(location=url)
-        return {'new_entry': post_for_editing}
+        return {'new_entry': new_entry, 'entry': post_for_editing}
     except DBAPIError:
         return Response("shit broke", content_type='text/plain', status_int=500)
 
