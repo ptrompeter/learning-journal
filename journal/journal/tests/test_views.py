@@ -22,3 +22,7 @@ def test_my_view():
 
 
 # def test_edit_entry(request):
+
+def test_list_page(app):
+    response = app.get('/')
+    assert response.status_code == 200
