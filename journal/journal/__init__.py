@@ -35,5 +35,6 @@ def main(global_config, **settings):
     config.add_route('home', '/')
     config.add_route('compose', '/compose')
     config.add_route('entry', '/entries/{entry_id}')
+    config.add_route('edit', '/edit/{entry_id}')
     config.scan()
     return config.make_wsgi_app()
