@@ -48,7 +48,7 @@ def app(dbtransaction):
 
 
 @pytest.fixture()
-def add_entry(dbtransaction):
+def new_entry(dbtransaction):
     from journal.models import Entry, DBSession
     entry = Entry(title='test title', text='test text')
     DBSession.add(entry)

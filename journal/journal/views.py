@@ -24,7 +24,7 @@ def my_view(request):
         all_entries = DBSession.query(Entry).order_by(Entry.id.desc()).all()
         return {'entries': all_entries}
     except DBAPIError:
-        return Response("shit broke", content_type='text/plain', status_int=500)
+        return Response("home broke", content_type='text/plain', status_int=500)
 
 
 @view_config(route_name='compose', renderer='templates/compose.jinja2')
@@ -37,7 +37,9 @@ def compose(request):
         DBSession.add(entry)
         DBSession.flush()
         transaction.commit()
-        url = request.route_url('entry', entry_id='latest')
+        entry = DBSession.query(Entry).order_by(Entry.id.desc()).first()
+
+        url = request.route_url('entry', entry_id=entry.id)
         return HTTPFound(location=url)
 
     try:
