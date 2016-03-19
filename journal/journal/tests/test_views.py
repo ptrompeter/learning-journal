@@ -15,7 +15,7 @@ def test_my_view(dbtransaction, new_entry):
 def test_entry_detail_view(dbtransaction, new_entry):
     """Test entry_detail returns a list of entries in it's reposnse object."""
     req = DummyRequest()
-    req.matchdict = {'entry.id': new_entry.id}
+    req.matchdict = {'entry_id': new_entry.id}
     resp_dict = entry_detail(req)
     assert resp_dict['entry'] == new_entry
 
@@ -32,25 +32,22 @@ def test_entry_detail_view(dbtransaction, new_entry):
 # class test_NewEntry(Form):
 #     pass
 
-# def test_my_view():
-#     req = DummyRequest()
-#     from journal.views import my_view
-#     assert my_view(req) == Response({'entries': []})
 
 # def test_compose(request):
 #     pass
 
 
-def test_add_new_entry(dbtransaction):
-    from journal.views import compose
-    req = DummyRequest()
-    req.title = 'test title'
-    req.text = 'test text'
-    req.method = 'POST'
-    compose(req)
-
-    entries = DBSession.query(Entry).all()
-    assert req.title == entries[0].title
+# def test_add_new_entry(dbtransaction):
+#     from journal.views import compose
+#     # req = DummyRequest(title='test title', text='test text')
+#     req = testing.DummyRequest()
+#     req.title = 'test title'
+#     req.text = 'test text'
+#     req.method = 'POST'
+#     compose(req)
+#
+#     entries = DBSession.query(Entry).all()
+#     assert req.title == entries[0].title
 
 
 
