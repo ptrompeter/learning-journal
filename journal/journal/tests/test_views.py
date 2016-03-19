@@ -4,19 +4,6 @@ from pyramid.testing import DummyRequest
 from pyramid.response import Response
 
 
-# class test_NewEntry(Form):
-#     pass
-
-
-# def test_list_view(dbtransaction, new_entry):
-#     """Test that list_view returns a Query of Entries."""
-#     test_request = DummyRequest()
-#
-#     response_dict = my_view(test_request)
-#     entries = response_dict['entries']
-#     assert entries[0] == new_entry
-
-
 def test_my_view(dbtransaction, new_entry):
     """Test my_view retunrs a lists entries in it's response object."""
     req = DummyRequest()
