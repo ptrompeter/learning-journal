@@ -41,9 +41,16 @@ def dbtransaction(request, sqlengine):
 def app(dbtransaction):
     from webtest import TestApp
     from journal import main
-    fake_settings = {'sqlalchemy': TEST_DATABASE_URL}
+    fake_settings = {'sqlalchemy.url': TEST_DATABASE_URL}
+    os.environ['JOURNAL_DB'] = TEST_DATABASE_URL
     app = main({}, **fake_settings)
     return TestApp(app)
 
 
-
+@pytest.fixture()
+def add_entry(dbtransaction):
+    from journal.models import Entry, DBSession
+    entry = Entry(title='test title', text='test text')
+    DBSession.add(entry)
+    DBSession.flush()
+    return entry
