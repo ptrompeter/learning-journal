@@ -24,6 +24,14 @@ def test_my_view(dbtransaction, new_entry):
     entries = resp['entries']
     assert entries[0] == new_entry
 
+
+def test_entry_detail_view(dbtransaction, new_entry):
+    """Test entry_detail returns a list of entries in it's reposnse object."""
+    req = DummyRequest()
+    req.matchdict = {'entry_id': new_entry.id}
+    resp_dict = entry_detail(req)
+    assert resp_dict['entry'] == new_entry
+
 # def test_compose(request):
 #     pass
 
