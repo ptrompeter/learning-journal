@@ -5,7 +5,7 @@ from pyramid.response import Response
 
 
 def test_my_view(dbtransaction, new_entry):
-    """Test my_view retunrs a lists entries in it's response object."""
+    """Test my_view retunrs a lists entries in the response object."""
     req = DummyRequest()
     resp = my_view(req)
     entries_dict = resp['entries']
@@ -13,7 +13,7 @@ def test_my_view(dbtransaction, new_entry):
 
 
 def test_entry_detail_view(dbtransaction, new_entry):
-    """Test entry_detail returns a list of entries in it's reposnse object."""
+    """Test entry_detail returns a list of entries in the reposnse object."""
     req = DummyRequest()
     req.matchdict = {'entry_id': new_entry.id}
     resp_dict = entry_detail(req)
