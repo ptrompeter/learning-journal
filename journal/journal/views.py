@@ -41,22 +41,21 @@ def entry_detail(request):
 
 @view_config(route_name='compose', renderer='templates/compose.jinja2')
 def compose(request):
+    import pdb
     try:
         new_entry = NewEntry(request.POST)
         if request.method == 'POST' and new_entry.validate():
+            pdb.set_trace()
             entry = Entry()
             entry.title = new_entry.title.data
             entry.text = new_entry.text.data
-
             DBSession.add(entry)
             DBSession.flush()
             entry_id = entry.id
-            transaction.commit()
-
             url = request.route_url('entry', entry_id=entry_id)
             return HTTPFound(location=url)
 
-        return {'new_entry': new_entry}
+        return {'new_entry': new_entry, 'request': request}
     except DBAPIError:
         return Response("compose broke", content_type='text/plain', status_int=500)
 
@@ -72,7 +71,6 @@ def edit_entry(request):
             new_entry.populate_obj(post_for_editing)
             DBSession.add(post_for_editing)
             DBSession.flush()
-            transaction.commit()
             url = request.route_url('entry', entry_id=entry_id)
             return HTTPFound(location=url)
         return {'new_entry': new_entry, 'entry': entry_id}
