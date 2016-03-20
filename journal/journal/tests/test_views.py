@@ -50,29 +50,26 @@ def test_entry_detail_view(dbtransaction, new_entry):
 #     assert req.title == entries[0].title
 
 
-
-
-# def test_entry_detail(request):
-
-
-# def test_edit_entry(request):
-
 def test_home_page(app):
+    """Test home route returns 200."""
     response = app.get('/')
     assert response.status_code == 200
 
-# def test_entry_page(app, add_entry):
-#     import transaction
-#     # from conftest import add_entry
-#     add_entry()
-#     transaction.commit()
-#     response = app.get('/entry/1')
-#     assert response.status_code == 200
+
+def test_entries_page(dbtransaction, app, new_entry):
+    """Test entries route returns 200."""
+    entry_id = new_entry.id
+    response = app.get('/entries/{}'.format(entry_id))
+    assert response.status_code == 200
+
 
 def test_compose_page(app):
-    response = app.get('/')
+    """Test compose route returns 200."""
+    response = app.get('/compose')
     assert response.status_code == 200
 
-# def test_edit_page(app):
-#     response = app.get('/')
-#     assert response.status_code == 200
+
+def test_edit_page(app):
+    """Test edit route returns 200."""
+    response = app.get('/edit/0')
+    assert response.status_code == 200
