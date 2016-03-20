@@ -37,17 +37,20 @@ def test_entry_detail_view(dbtransaction, new_entry):
 #     pass
 
 
-# def test_add_new_entry(dbtransaction):
-#     from journal.views import compose
-#     # req = DummyRequest(title='test title', text='test text')
-#     req = testing.DummyRequest()
-#     req.title = 'test title'
-#     req.text = 'test text'
-#     req.method = 'POST'
-#     compose(req)
-#
-#     entries = DBSession.query(Entry).all()
-#     assert req.title == entries[0].title
+def test_add_new_entry(dbtransaction):
+    from webob import multidict
+    from journal.views import compose
+    # req = DummyRequest(title='test title', text='test text')
+    test_dict = [('title', 'test title'),(('text'), ('test text'))]
+    mdict = multidict.MultiDict(test_dict)
+    req = DummyRequest()
+    req.method = 'POST'
+    req.POST = mdict
+    resp = compose(req)
+    resp.
+
+    # entries = DBSession.query(Entry).all()
+    # assert req.POST['title'] == entries[0].title
 
 
 def test_home_page(app):
@@ -71,5 +74,5 @@ def test_compose_page(app):
 
 def test_edit_page(app):
     """Test edit route returns 200."""
-    response = app.get('/edit/0')
+    response = app.get('/edit/1')
     assert response.status_code == 200

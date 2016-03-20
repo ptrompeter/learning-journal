@@ -2,9 +2,10 @@
 import pytest
 import os
 from sqlalchemy import create_engine
-
 from journal.models import DBSession, Base
-
+from pyramid.testing import DummyRequest
+from pyramid.testing import setUp
+from webob import multidict
 
 TEST_DATABASE_URL = os.environ.get('JOURNAL_DB_TEST')
 
@@ -54,3 +55,15 @@ def new_entry(dbtransaction):
     DBSession.add(entry)
     DBSession.flush()
     return entry
+
+@pytest.fixture()
+def dummy_post_request():
+    """Make a Dummy Request that will mimic a POST method request"""
+    req = DummyRequest()
+    config = setUp()
+    config.add_route('add', '/compose')
+    config.add_route('detail', '/entries/{entry_id}')
+    request.method = 'POST'
+    test_dict = [('title', 'test title'),('text', 'test text')]
+    mdict = multidict.MultiDict(test_dict)
+    request.POST = mdict
