@@ -63,7 +63,8 @@ def dummy_post_request():
     config = setUp()
     config.add_route('add', '/compose')
     config.add_route('detail', '/entries/{entry_id}')
-    request.method = 'POST'
+    req.method = 'POST'
     test_dict = [('title', 'test title'),('text', 'test text')]
     mdict = multidict.MultiDict(test_dict)
-    request.POST = mdict
+    req.POST = mdict
+    return req

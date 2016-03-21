@@ -37,17 +37,17 @@ def test_entry_detail_view(dbtransaction, new_entry):
 #     pass
 
 
-def test_add_new_entry(dbtransaction):
+def test_add_new_entry(dbtransaction, dummy_post_request):
     from webob import multidict
     from journal.views import compose
     # req = DummyRequest(title='test title', text='test text')
-    test_dict = [('title', 'test title'),(('text'), ('test text'))]
-    mdict = multidict.MultiDict(test_dict)
-    req = DummyRequest()
-    req.method = 'POST'
-    req.POST = mdict
+    # test_dict = [('title', 'test title'),(('text'), ('test text'))]
+    # mdict = multidict.MultiDict(test_dict)
+    req = dummy_post_request()
+    # req.method = 'POST'
+    # req.POST = mdict
     resp = compose(req)
-    resp.
+    assert resp.POST['title'] == 'test title'
 
     # entries = DBSession.query(Entry).all()
     # assert req.POST['title'] == entries[0].title
