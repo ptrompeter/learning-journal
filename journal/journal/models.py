@@ -1,3 +1,5 @@
+import datetime 
+
 from sqlalchemy import (
     Column,
     Index,
@@ -26,6 +28,6 @@ class Entry(Base):
     id = Column(Integer, primary_key=True)
     title = Column(Unicode(length=128), unique=True, nullable=False)
     text = Column(UnicodeText)
-    created = Column(DateTime(timezone=True))
+    created = Column(DateTime(), default=datetime.datetime.utcnow())
 
 #Index('journal_index', Entry.title, unique=True)

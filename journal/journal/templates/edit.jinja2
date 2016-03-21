@@ -2,7 +2,7 @@
 {% block content %}
 
 <h1>Compose a new Entry:</h1>
-<form method='POST' action='/compose'>
+<form method='POST' action='/edit/{{entry}}'>
 <div>{{ new_entry.title.label }}: {{new_entry.title()}}</div>
 <div>{{ new_entry.text.label }}: {{new_entry.text()}}</div>
 <input type='submit' value='Submit'>
