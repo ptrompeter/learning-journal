@@ -1,7 +1,5 @@
-from journal.models import Entry, DBSession
-from journal.views import my_view, compose, entry_detail
+from journal.views import my_view, compose, entry_detail, edit_entry
 from pyramid.testing import DummyRequest
-from pyramid.response import Response
 
 
 def test_my_view(dbtransaction, new_entry):
@@ -20,40 +18,20 @@ def test_entry_detail_view(dbtransaction, new_entry):
     assert resp_dict['entry'] == new_entry
 
 
-# def test_entry_detail_view(dbtransaction, new_entry):
-#     """Test that list_view returns a Query of Entries."""
-#     test_request = DummyRequest()
-#     test_request.matchdict = {'detail_id': new_entry.id}
-#
-#     response_dict = detail_view(test_request)
-#     assert response_dict['entry'] == new_entry
-
-
-# class test_NewEntry(Form):
-#     pass
-
-
-# def test_compose(request):
-#     pass
-
-
 def test_add_new_entry(dbtransaction, dummy_post_request):
-    from webob import multidict
-    from journal.views import compose
-    import pdb
-    # req = DummyRequest(title='test title', text='test text')
-    # test_dict = [('title', 'test title'),(('text'), ('test text'))]
-    # mdict = multidict.MultiDict(test_dict)
     req = dummy_post_request
-    # req.method = 'POST'
-    # req.POST = mdict
     resp = compose(req)
-    pdb.set_trace()
     assert resp.status_code == 302
 
 
-    # entries = DBSession.query(Entry).all()
-    # assert req.POST['title'] == entries[0].title
+def test_edit_entry(dbtransaction, new_entry, dummy_post_request):
+    entry_id = new_entry.id
+    dummy_post_request.path = '/edit'
+    dummy_post_request.matchdict = {'entry_id': entry_id}
+    resp = edit_entry(dummy_post_request)
+    assert resp.status_code == 302 and resp.title == 'Found'
+    resp_loc = resp.location.split('/')
+    assert resp_loc[-2] == 'entries' and int(resp_loc[-1]) == entry_id
 
 
 def test_home_page(app):

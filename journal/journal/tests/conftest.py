@@ -65,6 +65,7 @@ def dummy_post_request():
     config = setUp()
     config.add_route('add', '/compose')
     config.add_route('detail', '/entries/{entry_id}')
+    config.add_route('edit', '/edit/{entry_id}')
     config.add_route('entry', '/entries/{entry_id}')
     req.method = 'POST'
     test_dict = [('title', 'test title'), ('text', 'test text')]
