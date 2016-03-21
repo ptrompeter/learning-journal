@@ -35,6 +35,8 @@ def entry_detail(request):
         entry = DBSession.query(Entry).get(entry_id)
         entry.text = render_markdown(entry.text)
         return {'entry': entry}
+    # except httpexceptions:
+    #     return
     except DBAPIError:
         return Response("detail broke", content_type='text/plain', status_int=500)
 

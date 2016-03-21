@@ -38,6 +38,7 @@ def dbtransaction(request, sqlengine):
 
     return connection
 
+
 @pytest.fixture()
 def app(dbtransaction):
     from webtest import TestApp
@@ -56,6 +57,7 @@ def new_entry(dbtransaction):
     DBSession.flush()
     return entry
 
+
 @pytest.fixture()
 def dummy_post_request():
     """Make a Dummy Request that will mimic a POST method request"""
@@ -63,9 +65,10 @@ def dummy_post_request():
     config = setUp()
     config.add_route('add', '/compose')
     config.add_route('detail', '/entries/{entry_id}')
+    config.add_route('edit', '/edit/{entry_id}')
     config.add_route('entry', '/entries/{entry_id}')
     req.method = 'POST'
-    test_dict = [('title', 'test title'),('text', 'test text')]
+    test_dict = [('title', 'test title'), ('text', 'test text')]
     mdict = multidict.MultiDict(test_dict)
     req.POST = mdict
     return req
