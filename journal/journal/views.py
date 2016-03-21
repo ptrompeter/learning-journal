@@ -47,7 +47,7 @@ def compose(request):
     try:
         new_entry = NewEntry(request.POST)
         if request.method == 'POST' and new_entry.validate():
-            pdb.set_trace()
+            # pdb.set_trace()
             entry = Entry()
             entry.title = new_entry.title.data
             entry.text = new_entry.text.data

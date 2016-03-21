@@ -40,14 +40,16 @@ def test_entry_detail_view(dbtransaction, new_entry):
 def test_add_new_entry(dbtransaction, dummy_post_request):
     from webob import multidict
     from journal.views import compose
+    import pdb
     # req = DummyRequest(title='test title', text='test text')
     # test_dict = [('title', 'test title'),(('text'), ('test text'))]
     # mdict = multidict.MultiDict(test_dict)
-    req = dummy_post_request()
+    req = dummy_post_request
     # req.method = 'POST'
     # req.POST = mdict
     resp = compose(req)
-    assert resp.POST['title'] == 'test title'
+    pdb.set_trace()
+    assert resp.status_code == 302
 
 
     # entries = DBSession.query(Entry).all()
