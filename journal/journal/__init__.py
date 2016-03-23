@@ -25,7 +25,6 @@ def main(global_config, **settings):
     if database_url is not None:
         settings['sqlalchemy.url'] = database_url
 
-    # settings = get_appsettings(config_uri, options=options)
     engine = engine_from_config(settings, 'sqlalchemy.')
     DBSession.configure(bind=engine)
     Base.metadata.bind = engine

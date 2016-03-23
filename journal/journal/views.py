@@ -21,11 +21,8 @@ class NewEntry(Form):
 
 @view_config(route_name='home', renderer='templates/home.jinja2')
 def my_view(request):
-    try:
-        all_entries = DBSession.query(Entry).order_by(Entry.id.desc()).all()
-        return {'entries': all_entries}
-    except DBAPIError:
-        return Response("home broke", content_type='text/plain', status_int=500)
+    all_entries = DBSession.query(Entry).order_by(Entry.id.desc()).all()
+    return {'entries': all_entries}
 
 
 @view_config(route_name='entry', renderer='templates/entry.jinja2')
@@ -35,19 +32,15 @@ def entry_detail(request):
         entry = DBSession.query(Entry).get(entry_id)
         entry.text = render_markdown(entry.text)
         return {'entry': entry}
-    # except httpexceptions:
-    #     return
     except DBAPIError:
         return Response("detail broke", content_type='text/plain', status_int=500)
 
 
 @view_config(route_name='compose', renderer='templates/compose.jinja2')
 def compose(request):
-    import pdb
     try:
         new_entry = NewEntry(request.POST)
         if request.method == 'POST' and new_entry.validate():
-            # pdb.set_trace()
             entry = Entry()
             entry.title = new_entry.title.data
             entry.text = new_entry.text.data
@@ -71,8 +64,6 @@ def edit_entry(request):
 
         if request.method == 'POST' and new_entry.validate():
             new_entry.populate_obj(post_for_editing)
-            DBSession.add(post_for_editing)
-            DBSession.flush()
             url = request.route_url('entry', entry_id=entry_id)
             return HTTPFound(location=url)
         return {'new_entry': new_entry, 'entry': entry_id}

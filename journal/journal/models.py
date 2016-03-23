@@ -1,10 +1,8 @@
-import datetime 
+import datetime
 
 from sqlalchemy import (
     Column,
-    Index,
     Integer,
-    Text,
     Unicode,
     UnicodeText,
     DateTime,
@@ -23,11 +21,13 @@ DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 Base = declarative_base()
 
 
+def cur_time():
+    return datetime.datetime.utcnow()
+
+
 class Entry(Base):
     __tablename__ = 'entries'
     id = Column(Integer, primary_key=True)
     title = Column(Unicode(length=128), unique=True, nullable=False)
     text = Column(UnicodeText)
-    created = Column(DateTime(), default=datetime.datetime.utcnow())
-
-#Index('journal_index', Entry.title, unique=True)
+    created = Column(DateTime(), default=cur_time())
