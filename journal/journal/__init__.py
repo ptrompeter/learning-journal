@@ -5,8 +5,6 @@ from pyramid.authorization import ACLAuthorizationPolicy
 
 from sqlalchemy import engine_from_config
 
-from journal.security import groupfinder
-
 from pyramid.paster import get_appsettings
 
 from cryptacular.bcrypt import BCRYPTPasswordManager
@@ -17,7 +15,7 @@ from .models import (
     RootFactory
     )
 
-manager = BCRYPTPasswordManager()
+
 
 
 def make_session(settings):
@@ -39,7 +37,7 @@ def main(global_config, **settings):
     DBSession.configure(bind=engine)
     Base.metadata.bind = engine
     authn_policy = AuthTktAuthenticationPolicy(
-        'icanhazpws', callback=groupfinder, hashalg='sha512')
+        'icanhazpws', hashalg='sha512')
     authz_policy = ACLAuthorizationPolicy()
     settings['auth.username'] = os.environ.get('MY_NAME', 'edit')
     settings['auth.password'] = os.environ.get('MY_PASSWORD', 'secret')

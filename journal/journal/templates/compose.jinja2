@@ -1,15 +1,23 @@
-{% extends "base.jinja2" %}
+{% extends "index.html" %}
+
+{% block nav %}
+{% if request.authenticated_userid %} <a href='/compose'>Compose</a> <a href='/logout'>Log out </a> {% endif %}
+{% if not request.authenticated_userid  %}<a href='/login'>Log In</a>{% endif %}
+{% endblock %}
+
 {% block content %}
 
-<h1>Compose a new Entry:</h1>
+<h4>Compose a new Entry:</h4>
 <form method='POST' action='/compose'>
 <div>
-    {{ new_entry.title.label }}: {{new_entry.title()}}
+    {{ new_entry.title.label }} {{new_entry.title()}}
     {% if new_entry.errors %}
     <ul class="error">{% for message in new_entry.errors.get('title', []) %}<li>{{message}}</li>{%endfor%}</ul>
     {% endif %}
 </div>
-<div>{{ new_entry.text.label }}: {{new_entry.text()}}</div>
+<div>
+<label>{{ new_entry.text.label }}</label> 
+{{new_entry.text(class_='u-full-width')}}</div>
 <input type='submit' value='Submit'>
 </form>
 

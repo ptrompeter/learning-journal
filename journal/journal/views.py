@@ -6,7 +6,7 @@ from pyramid.httpexceptions import HTTPFound
 from wtforms import Form, StringField, TextAreaField, validators
 from jinja2 import Markup
 import markdown
-from . import manager
+# from . import manager
 from pyramid.view import (
     view_config,
     forbidden_view_config,
@@ -17,7 +17,7 @@ from pyramid.security import (
     forget,
     )
 
-from .security import USERS
+from .security import check_pw, manager
 
 # from cryptacular.bcrypt import BCRYPTPasswordManager
 
@@ -39,6 +39,7 @@ class LoginForm(Form):
 
 @view_config(route_name='home', renderer='templates/home.jinja2')
 def my_view(request):
+    import pdb; pdb.set_trace()
     all_entries = DBSession.query(Entry).order_by(Entry.id.desc()).all()
     return {'entries': all_entries}
 
@@ -59,10 +60,8 @@ def entry_detail(request):
 
 @view_config(route_name='compose', renderer='templates/compose.jinja2', permission='edit')
 def compose(request):
-    import pdb
     new_entry = NewEntry(request.POST)
     if request.method == 'POST' and new_entry.validate():
-        # pdb.set_trace()
         entry = Entry()
         entry.title = new_entry.title.data
         entry.text = new_entry.text.data
@@ -83,8 +82,7 @@ def forbidden_view(request):
 
 @view_config(route_name='login', renderer='templates/login.jinja2')
 def login(request):
-    import pdb
-    username = request.params.get('username', '')
+    # username = request.params.get('username', '')
     error = ''
     login_form = LoginForm(request.POST)
     if request.method == 'POST':
@@ -93,22 +91,23 @@ def login(request):
 
         user = os.environ.get('MY_NAME', None)
         my_password = os.environ.get('MY_PASSWORD', None)
-        pdb.set_trace()
-        if user == login and manager.check(my_password, password):
+        if user == login and check_pw(password):
             headers = remember(request, login)
-            return HTTPFound(location=request.route_url('home'), headers=headers)
+            return HTTPFound(request.route_url('home'), headers=headers)
         did_fail = True
 
         return{
-            'login': login,
-            'failed_attempt': did_fail
-    }
-    return {'login_form': login_form, 'request': request}
+            'failed_attempt': did_fail,
+            'error_msg': "Login failed.  Try Again.",
+            'login_form': login_form,
+        }
+    return {'login_form': login_form}
 
-@view_config(route_name='logout', renderer='templates/logout.jinja2')
+@view_config(route_name='logout', renderer='templates/home.jinja2')
 def logout_view(request):
     headers = forget(request)
     loc = request.route_url('home')
+    return HTTPFound(location=loc)
 
 @view_config(route_name='edit', renderer='templates/edit.jinja2', permission='edit')
 def edit_entry(request):

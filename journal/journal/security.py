@@ -1,11 +1,13 @@
 # _*_ Coding: utf-8 _*_
 
 import os
+# from . import manager
+from cryptacular.bcrypt import BCRYPTPasswordManager
 
-USERS = {os.environ.get('MY_NAME'):['group:editor']
-        }
 
-def groupfinder(userid, request):
-    if userid in USERS:
-        return USERS.get(userid, [])
+manager = BCRYPTPasswordManager()
+
+
+def check_pw(pw):
+    return manager.check(os.environ.get('MY_PASSWORD'), pw)
 

@@ -22,11 +22,12 @@ from zope.sqlalchemy import ZopeTransactionExtension
 from pyramid.security import (
     Allow,
     Everyone,
+    Authenticated
     )
 
 class RootFactory(object):
     __acl__ = [(Allow, Everyone, 'view'),
-        (Allow, 'group:editors', 'edit')]
+               (Allow, Authenticated, 'edit')]
 
     def __init__(self,request):
         pass

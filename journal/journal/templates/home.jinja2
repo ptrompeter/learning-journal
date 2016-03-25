@@ -1,7 +1,13 @@
-{% extends "base.jinja2" %}
+{% extends "index.html" %}
+
+{% block nav %}
+{% if request.authenticated_userid %} <a href='/compose'>Compose</a> <a href='/logout'>Log out </a> {% endif %}
+{% if not request.authenticated_userid %}<a href='/login'>Log In</a>{% endif %}
+{% endblock %}
+
 {% block content %}
 
-<h1>Journal Entries:</h1>
+<h4>Journal Entries:</h4>
 <ul>
   {% for item in entries %}
   <li> 

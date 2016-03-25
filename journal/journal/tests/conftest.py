@@ -38,7 +38,7 @@ def dbtransaction(request, sqlengine):
 
     return connection
 
-AUTH_DATA = {'login': os.environ.get('MY_NAME'), 'password': os.environ.get('MY_PASSWORD')}
+AUTH_DATA = {'login': os.environ.get('MY_NAME'), 'password': '4lld4pws'}
 
 @pytest.fixture()
 def app(dbtransaction):
