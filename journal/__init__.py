@@ -28,7 +28,7 @@ def make_session(settings):
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
-    database_url = os.environ.get('JOURNAL_DB', None)
+    database_url = os.environ.get('DATABASE_URL', None)
     if database_url is not None:
         settings['sqlalchemy.url'] = database_url
 
@@ -39,8 +39,8 @@ def main(global_config, **settings):
     authn_policy = AuthTktAuthenticationPolicy(
         'icanhazpws', hashalg='sha512')
     authz_policy = ACLAuthorizationPolicy()
-    settings['auth.username'] = os.environ.get('MY_NAME', 'edit')
-    settings['auth.password'] = os.environ.get('MY_PASSWORD', 'secret')
+    settings['auth.username'] = os.environ.get('ADMIN_PASSWORD', 'edit')
+    settings['auth.password'] = os.environ.get('ADMIN_USERNAME', 'secret')
     config = Configurator(settings=settings,
         root_factory=RootFactory)
     config.set_authentication_policy(authn_policy)
