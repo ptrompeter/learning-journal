@@ -18,9 +18,13 @@ requires = [
     'zope.sqlalchemy',
     'waitress',
     'psycopg2',
+    'WTForms',
+    'cryptacular',
+    'markdown',
+    'waitress'
     ]
 
-tests_require = ['pytest', 'pytest-watch', 'tox']
+tests_require = ['pytest', 'pytest-watch', 'tox', 'webTest', 'webOb']
 
 dev_requires = ['ipython', 'pyramid-ipython', 'coverage']
 
@@ -41,7 +45,7 @@ setup(name='journal',
       packages=find_packages(),
       include_package_data=True,
       zip_safe=False,
-      test_suite='journal',
+      test_suite='journal', 
       install_requires=requires,
       extras_require={
         'test': tests_require,
@@ -52,5 +56,6 @@ setup(name='journal',
       main = journal:main
       [console_scripts]
       initialize_db = journal.scripts.initializedb:main
+      load_api = learning_jounral.scripts.load_class_api:main
       """,
       )

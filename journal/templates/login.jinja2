@@ -1,0 +1,22 @@
+{% extends "index.html" %}
+
+{% block nav %}
+{% if request.authenticated_userid %} <a href='/compose'>Compose</a> <a href='/logout'>Log out </a> {% endif %}
+{% if not request.authenticated_userid %}<a href='/login'>Log In</a>{% endif %}
+{% endblock %}
+
+{% block content %}
+{{ error_msg }}
+<h4>Login if you dare</h4>
+<form method='POST' action='/login'>
+<div>
+    <label>{{ login_form.login.label }}</label> {{login_form.login()}}
+    {% if login_form.errors %}
+    <ul class="error">{% for message in new_entry.errors.get('title', []) %}<li>{{message}}</li>{%endfor%}</ul>
+    {% endif %}
+</div>
+<div><label>{{ login_form.password.label }}</label> {{login_form.password()}}</div>
+<input type='submit' value='Submit'>
+</form>
+
+{% endblock %}

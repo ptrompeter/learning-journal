@@ -1,0 +1,12 @@
+{% extends "index.html" %}
+
+{% block nav %}
+{% if request.authenticated_userid %} <a href='/compose'>Compose</a> <a href='/logout'>Log out </a> {% endif %}
+{% if not request.authenticated_userid %}<a href='/login'>Log In</a>{% endif %}
+{% endblock %}
+
+{% block content %} 
+<h4> {{entry.title}} </h4> 
+<p> {{entry.text}} </p>
+<a href="{{request.route_url('edit', entry_id=entry.id)}}">Edit</a>
+{% endblock %}

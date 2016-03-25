@@ -38,6 +38,7 @@ def dbtransaction(request, sqlengine):
 
     return connection
 
+AUTH_DATA = {'login': os.environ.get('MY_NAME'), 'password': '4lld4pws'}
 
 @pytest.fixture()
 def app(dbtransaction):
@@ -47,6 +48,11 @@ def app(dbtransaction):
     os.environ['JOURNAL_DB'] = TEST_DATABASE_URL
     app = main({}, **fake_settings)
     return TestApp(app)
+
+@pytest.fixture()
+def authenticated(app):
+    app.post('/login', AUTH_DATA)
+    return app
 
 
 @pytest.fixture()
