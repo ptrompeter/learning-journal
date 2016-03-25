@@ -22,6 +22,7 @@ Base = declarative_base()
 
 
 def cur_time():
+    """Return current utc date time when called."""
     return datetime.datetime.utcnow()
 
 

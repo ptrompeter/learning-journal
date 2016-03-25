@@ -8,6 +8,7 @@ from pyramid.testing import setUp
 from webob import multidict
 
 TEST_DATABASE_URL = os.environ.get('JOURNAL_DB_TEST')
+AUTH_DATA = {'username': 'admin', 'password': 'secret'}
 
 
 @pytest.fixture(scope='session')
@@ -47,6 +48,19 @@ def app(dbtransaction):
     os.environ['JOURNAL_DB'] = TEST_DATABASE_URL
     app = main({}, **fake_settings)
     return TestApp(app)
+
+
+@pytest.fixture()
+def auth_env():
+        from passlib.apps import custom_app_context as pwd_context
+        os.environ['AUTH_PASSWORD'] = pwd_context.encrypt('secret')
+        os.environ['AUTH_USERNAME'] = 'admin'
+
+
+@pytest.fixture()
+def authenticated_app(app, auth_env):
+    app.post('/login', AUTH_DATA)
+    return app
 
 
 @pytest.fixture()
