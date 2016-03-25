@@ -5,10 +5,17 @@
     <title>Learning Journal</title>
   </head>
   <body>
+    {% if not request.has_permission('create') %}
+    <li><a href="/login">Login</a></li>
+    {% endif %}
+    {% if request.has_permission('create') %}
+    <li><a href="/logout">Logout</a></li>
+    {% endif %}
+    <!-- {% block header %} this is a placeholder {% endblock %} -->
+    <!-- {% block login %}{% endblock %} -->
 
-      {% block header %} this is a placeholder {% endblock %}
-      {% block content %}{% endblock %}
-      {% block footer %} this is a placeholder {% endblock %}
+    {% block content %}{% endblock %}
 
+    <!-- {% block footer %} this is a placeholder {% endblock %} -->
   </body>
 </html>

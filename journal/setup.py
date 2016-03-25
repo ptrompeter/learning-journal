@@ -18,6 +18,7 @@ requires = [
     'zope.sqlalchemy',
     'waitress',
     'psycopg2',
+    'passlib',
     ]
 
 tests_require = ['pytest', 'pytest-watch', 'tox']
@@ -52,5 +53,6 @@ setup(name='journal',
       main = journal:main
       [console_scripts]
       initialize_db = journal.scripts.initializedb:main
+      load_api = journal.scripts.load_class_api:main
       """,
       )
