@@ -37,10 +37,10 @@ def main(global_config, **settings):
     DBSession.configure(bind=engine)
     Base.metadata.bind = engine
     authn_policy = AuthTktAuthenticationPolicy(
-        'icanhazpws', hashalg='sha512')
+        os.environ.get('AUTH_SECRET'), hashalg='sha512')
     authz_policy = ACLAuthorizationPolicy()
-    settings['auth.username'] = os.environ.get('ADMIN_PASSWORD', 'edit')
-    settings['auth.password'] = os.environ.get('ADMIN_USERNAME', 'secret')
+    settings['auth.username'] = os.environ.get('ADMIN_PASSWORD')
+    settings['auth.password'] = os.environ.get('ADMIN_USERNAME')
     config = Configurator(settings=settings,
         root_factory=RootFactory)
     config.set_authentication_policy(authn_policy)
