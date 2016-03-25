@@ -39,7 +39,6 @@ class LoginForm(Form):
 
 @view_config(route_name='home', renderer='templates/home.jinja2')
 def my_view(request):
-    import pdb; pdb.set_trace()
     all_entries = DBSession.query(Entry).order_by(Entry.id.desc()).all()
     return {'entries': all_entries}
 

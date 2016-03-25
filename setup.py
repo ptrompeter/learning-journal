@@ -18,9 +18,7 @@ requires = [
     'zope.sqlalchemy',
     'waitress',
     'psycopg2',
-    'pyramid.security',
     'WTForms',
-    'pyramid.security',
     'cryptacular',
     'markdown',
     'waitress'
