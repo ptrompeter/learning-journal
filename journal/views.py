@@ -1,48 +1,52 @@
-import transaction
 import os
-from pyramid.response import Response
-from pyramid.view import view_config
-from pyramid.httpexceptions import HTTPFound
-from wtforms import Form, StringField, TextAreaField, validators
+
 from jinja2 import Markup
+
 import markdown
-# from . import manager
-from pyramid.view import (
-    view_config,
-    forbidden_view_config,
-    )
+
+from pyramid.httpexceptions import HTTPFound
+
+# from pyramid.response import Response
 
 from pyramid.security import (
-    remember,
+    authenticated_userid,
     forget,
-    )
+    remember,
+)
+from pyramid.view import view_config  # forbidden_view_config
 
-from .security import check_pw, manager
+from wtforms import Form, StringField, TextAreaField, validators
 
-# from cryptacular.bcrypt import BCRYPTPasswordManager
+# import transaction
 
-from sqlalchemy.exc import DBAPIError
+# from . import manager
 
 from .models import (
     DBSession,
     Entry,
-    )
+)
+
+from .security import check_pw  # manager
+
+# from cryptacular.bcrypt import BCRYPTPasswordManager
+
+# from sqlalchemy.exc import DBAPIError
 
 
 class NewEntry(Form):
     title = StringField('title', [validators.Length(min=1, max=128)])
     text = TextAreaField('text')
 
+
 class LoginForm(Form):
     login = StringField('login', [validators.Length(min=1, max=128)])
     password = StringField('password', [validators.Length(min=8, max=32)])
+
 
 @view_config(route_name='home', renderer='templates/home.jinja2')
 def my_view(request):
     all_entries = DBSession.query(Entry).order_by(Entry.id.desc()).all()
     return {'entries': all_entries}
-
-
 
 
 @view_config(route_name='entry', renderer='templates/entry.jinja2')
@@ -56,8 +60,9 @@ def entry_detail(request):
     #     return
 
 
-
-@view_config(route_name='compose', renderer='templates/compose.jinja2', permission='edit')
+@view_config(route_name='compose',
+             renderer='templates/compose.jinja2',
+             permission='edit')
 def compose(request):
     new_entry = NewEntry(request.POST)
     if request.method == 'POST' and new_entry.validate():
@@ -71,6 +76,7 @@ def compose(request):
         return HTTPFound(location=url)
     return {'new_entry': new_entry, 'request': request}
 
+
 @view_config(route_name='forbidden', renderer='templates/forbidden.jinja2')
 def forbidden_view(request):
     """Do not allow login if user is already logged in"""
@@ -79,10 +85,10 @@ def forbidden_view(request):
     loc = request.route_url('login', _query=(('next', request.path),))
     return HTTPFound(location=loc)
 
+
 @view_config(route_name='login', renderer='templates/login.jinja2')
 def login(request):
     # username = request.params.get('username', '')
-    error = ''
     login_form = LoginForm(request.POST)
     if request.method == 'POST':
         login = request.POST.get('login', '')
@@ -102,11 +108,13 @@ def login(request):
         }
     return {'login_form': login_form}
 
+
 @view_config(route_name='logout', renderer='templates/home.jinja2')
 def logout_view(request):
     headers = forget(request)
     loc = request.route_url('home')
     return HTTPFound(location=loc)
+
 
 @view_config(route_name='edit', renderer='templates/edit.jinja2', permission='edit')
 def edit_entry(request):
