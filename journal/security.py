@@ -10,4 +10,3 @@ manager = BCRYPTPasswordManager()
 
 def check_pw(pw):
     return manager.check(os.environ.get('MY_PASSWORD'), pw)
-

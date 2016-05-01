@@ -1,35 +1,36 @@
-import datetime 
+import datetime
+
+from pyramid.security import (
+    Allow,
+    Authenticated,
+    Everyone,
+)
 
 from sqlalchemy import (
     Column,
+    DateTime,
     Index,
     Integer,
     Text,
     Unicode,
     UnicodeText,
-    DateTime,
-    )
+)
 
 from sqlalchemy.ext.declarative import declarative_base
 
 from sqlalchemy.orm import (
     scoped_session,
     sessionmaker,
-    )
+)
 
 from zope.sqlalchemy import ZopeTransactionExtension
 
-from pyramid.security import (
-    Allow,
-    Everyone,
-    Authenticated
-    )
 
 class RootFactory(object):
     __acl__ = [(Allow, Everyone, 'view'),
                (Allow, Authenticated, 'edit')]
 
-    def __init__(self,request):
+    def __init__(self, request):
         pass
 
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
@@ -45,7 +46,6 @@ class Entry(Base):
 
     @property
     def markeddown(self):
-        return render_markdown(self.text) 
-    
+        return render_markdown(self.text)
 
 #Index('journal_index', Entry.title, unique=True)
