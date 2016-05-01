@@ -1,0 +1,3 @@
+#!/bin/bash
+python setup.py develop
+initialize_journal_db production.ini

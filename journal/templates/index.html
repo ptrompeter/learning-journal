@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Learning Journal</title>
+    <link rel="stylesheet" href="/static/css/normalize.css">
+    <link rel="stylesheet" href="/static/css/skeleton.css">
+    <link rel='stylesheet' type='text/css' href='/static/css/style.css'>
+    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+    <meta name="description" content="Learning journal of Patrick Trompeter, spring 2016">
+    <meta name="author" content="Patrick Trompeter">
+  </head>
+  <body>
+    <main class='container'>
+        <section id='nav_section' class='row'>
+          <nav>
+          {% block nav %} {% endblock %}
+          </nav>
+        </section>
+        <section id='header' class='row'>
+<!--           <div class='two columns'>
+            <img id ='headshot' src='/static/img/jan_2016_wall_shot.jpg'>
+          </div> -->
+          <div class='twelve columns'>
+          <h3>Journal of Patrick Trompeter</h3>
+          <h5>A journal of my experiences during Code Fellows' Python Accelerator</h5>
+          <p>Spring 2016</p>
+          </div>
+        </section>
+        <section id='main_section' class='row'>
+          {% block content %}{% endblock %}
+        </section>
+    </main>
+  </body>
+</html>
